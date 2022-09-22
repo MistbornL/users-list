@@ -16,6 +16,8 @@ export const Login = () => {
         >
           <form
             style={{
+              padding: "2rem",
+              boxSizing: "border-box",
               width: "40rem",
               alignItems: "center",
             }}
@@ -42,18 +44,9 @@ export const Login = () => {
                 placeholder="Password"
               />
             </div>
-            <div class="form-check">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="exampleCheck1"
-              />
-              <label class="form-check-label" for="exampleCheck1">
-                Check me out
-              </label>
-            </div>
+
             <p>
-              Don't Have An Account? <Link to={"/sign-up"}>Sign Up</Link>
+              Don't Have An Account? <Link to="/sign-up">Sign Up</Link>
             </p>
             <button type="submit" class="btn btn-primary">
               Log In
