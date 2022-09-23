@@ -1,81 +1,23 @@
-const express = require("express");
-const cors = require("cors");
-const db = require("./models");
-const dbConfig = require("./config/db.config.");
-const Role = db.role;
+const express = require("express"); // import express
+
+const cors = require("cors"); // import cors
+const { config } = require("dotenv");
+
+const PORT = process.env.PORT || 5000;
+
+// Create Application Object
 const app = express();
 
-var corsOptions = {
-  origin: "*",
-};
+// GLOBAL MIDDLEWARE
+app.use(cors()); // add cors headers
+app.use(express.json()); // parse json bodies
 
-db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Successfully connect to MongoDB.");
-    initial();
-  })
-  .catch((err) => {
-    console.error("Connection error", err);
-    process.exit();
-  });
-
-function initial() {
-  Role.estimatedDocumentCount((err, count) => {
-    if (!err && count === 0) {
-      new Role({
-        name: "user",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-
-        console.log("added 'user' to roles collection");
-      });
-
-      new Role({
-        name: "moderator",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-
-        console.log("added 'moderator' to roles collection");
-      });
-
-      new Role({
-        name: "admin",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-
-        console.log("added 'admin' to roles collection");
-      });
-    }
-  });
-}
-app.use(cors(corsOptions));
-
-// parse requests of content-type - application/json
-app.use(express.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-
-// simple route
+// ROUTES AND ROUTES
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.send("this is the test route to make sure server is working");
 });
 
-// set port, listen for requests
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
-
-require("./routes/auth.routes")(app);
-require("./routes/user.routes")(app);
+// APP LISTENER
+app.listen(PORT, () =>
+  console.log("SERVER STATUS", `Listening on port ${PORT}`)
+);
