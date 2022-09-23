@@ -1,79 +1,51 @@
-"use strict";
+require("dotenv").config(); // load .env variables
+const { Router } = require("express"); // import router from express
+const User = require("../models/userModel"); // import user model
+const bcrypt = require("bcryptjs"); // import bcrypt to hash passwords
+const jwt = require("jsonwebtoken"); // import jwt to sign tokens
 
-var mongoose = require("mongoose"),
-  jwt = require("jsonwebtoken"),
-  bcrypt = require("bcrypt"),
-  User = mongoose.model("User");
+const router = Router(); // create router to create route bundle
 
-exports.register = function (req, res) {
-  console.log(req);
-  var newUser = new User(req.body);
-  newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
-  newUser.save(function (err, user) {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
+//DESTRUCTURE ENV VARIABLES WITH DEFAULTS
+const SECRET = process.env.SECRET;
 
-    if (!user) {
-      return res.status(404).send({ message: "User Not found." });
-    }
+// Signup route to create a new user
+router.post("/signup", async (req, res) => {
+  console.log(req.body);
+  try {
+    // hash the password
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    // create a new user
+    const user = await User.create(req.body);
+    // send new user as response
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
+  }
+});
 
-    var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        accessToken: null,
-        message: "Invalid Password!",
-      });
-    }
-    var token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400, // 24 hours
-    });
-
-    res.status(200).send({
-      id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-      accessToken: token,
-    });
-  });
-};
-
-exports.sign_in = function (req, res) {
-  User.findOne(
-    {
-      email: req.body.email,
-    },
-    function (err, user) {
-      if (err) throw err;
-      if (!user || !user.comparePassword(req.body.password)) {
-        return res.status(401).json({
-          message: "Authentication failed. Invalid user or password.",
-        });
+// Login route to verify a user and get a token
+router.post("/login", async (req, res) => {
+  try {
+    // check if the user exists
+    const user = await User.findOne({ username: req.body.username });
+    if (user) {
+      //check if password matches
+      const result = await bcrypt.compare(req.body.password, user.password);
+      if (result) {
+        // sign token and send it in response
+        const token = await jwt.sign({ username: user.username }, SECRET);
+        res.json({ token });
+      } else {
+        res.status(400).json({ error: "password doesn't match" });
       }
-      return res.json({
-        token: jwt.sign(
-          { email: user.email, fullName: user.fullName, _id: user._id },
-          "RESTFULAPIs"
-        ),
-      });
+    } else {
+      res.status(400).json({ error: "User doesn't exist" });
     }
-  );
-};
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+});
 
-exports.loginRequired = function (req, res, next) {
-  if (req.user) {
-    next();
-  } else {
-    return res.status(401).json({ message: "Unauthorized user!!" });
-  }
-};
-exports.profile = function (req, res, next) {
-  if (req.user) {
-    res.send(req.user);
-    next();
-  } else {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-};
+module.exports = router;
