@@ -5,7 +5,6 @@ import del from "../../assets/png-clipart-trash-can-illustration-computer-icons-
 export const Users = () => {
   const [users, setUsers] = React.useState([]);
   const token = localStorage.getItem("token");
-  console.log(users);
   useEffect(() => {
     axios
       .get("http://localhost:5000/users/", {
@@ -35,10 +34,16 @@ export const Users = () => {
         />
         <img style={{ width: "60px", height: "60px" }} src={del} alt="delete" />
       </div>
-      <table className="table">
+      <table className="table ">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+            />
+
             <th scope="col">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
@@ -50,15 +55,24 @@ export const Users = () => {
         <tbody>
           {users.map((user, index) => {
             return (
-              <tr>
-                <th scope="row">{index + 1}</th>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.dateRegister}</td>
-                <td>{user.dateLastAuthorization}</td>
-                <td>{user.status}</td>
-              </tr>
+              <>
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value={user._id}
+                  id="flexCheckDefault"
+                />
+
+                <tr>
+                  <th scope="row"></th>
+                  <td>{user.id}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.dateRegister}</td>
+                  <td>{user.dateLastAuthorization}</td>
+                  <td>{user.status}</td>
+                </tr>
+              </>
             );
           })}
         </tbody>

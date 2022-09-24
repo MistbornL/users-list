@@ -3,6 +3,7 @@ const { Router } = require("express"); // import router from express
 const User = require("../models/userModel"); // import user model
 const bcrypt = require("bcryptjs"); // import bcrypt to hash passwords
 const jwt = require("jsonwebtoken"); // import jwt to sign tokens
+const { isLoggedIn } = require("./midleware");
 
 const router = Router(); // create router to create route bundle
 
@@ -58,7 +59,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/logout", auth, async (req, res) => {
+router.get("/logout", isLoggedIn, async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.user.userId, { status: OFFLINE });
     res.status(200).json({ message: "User changed." });
