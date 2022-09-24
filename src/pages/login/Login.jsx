@@ -1,7 +1,28 @@
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const email = React.useRef();
+  const password = React.useRef();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:5000/user/login", {
+        email: email.current.value,
+        password: password.current.value,
+      })
+      .then((res) => {
+        const token = res.data.token;
+        localStorage.setItem("token", token);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <header>
@@ -15,6 +36,7 @@ export const Login = () => {
           }}
         >
           <form
+            onSubmit={handleLogin}
             style={{
               padding: "2rem",
               boxSizing: "border-box",
@@ -25,6 +47,7 @@ export const Login = () => {
             <div clasNames="form-group">
               <label for="exampleInputEmail1">Email address</label>
               <input
+                ref={email}
                 type="email"
                 className="form-control"
                 id="exampleInputEmail1"
@@ -38,6 +61,7 @@ export const Login = () => {
             <div className="form-group">
               <label for="exampleInputPassword1">Password</label>
               <input
+                ref={password}
                 type="password"
                 className="form-control"
                 id="exampleInputPassword1"

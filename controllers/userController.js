@@ -12,12 +12,6 @@ const SECRET = process.env.SECRET;
 // Signup route to create a new user
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password, name } = req.body;
-
-    const check = User.findOne({ email });
-    if (check) {
-      res.status(400).json({ message: "This user already exists." });
-    }
     // hash the password
     req.body.password = await bcrypt.hash(req.body.password, 10);
     // create date for user registrations
@@ -37,10 +31,10 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     // check if the user exists
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ email: req.body.email });
 
     if (user.status === "Blocked") {
-      return res.status(400).json({ message: "This user is blocked." });
+      return res.status(400).json({ message: "This email is blocked." });
     }
 
     if (user) {
@@ -48,10 +42,11 @@ router.post("/login", async (req, res) => {
       const result = await bcrypt.compare(req.body.password, user.password);
       if (result) {
         // sign token and send it in response
-        const token = await jwt.sign({ username: user.username }, SECRET);
+        const token = await jwt.sign({ email: user.email }, SECRET);
         user.dateLastAuthorization = Date.now();
-        user.status === "Online";
+        user.status = "Online";
         await user.save();
+
         res.json({ token, userId: user.id });
       } else {
         res.status(400).json({ error: "password doesn't match" });

@@ -13,7 +13,7 @@ router.get("/", isLoggedIn, async (req, res) => {
       return {
         id: user._id,
         email: user.email,
-        name: user.name,
+        username: user.username,
         status: user.status,
         dateRegister: user.dateRegister,
         dateLastAuthorization: user.dateLastAuthorization,
