@@ -5,7 +5,7 @@ const cors = require("cors"); // import cors
 const UserRouter = require("./controllers/userController"); //import User Routes
 
 //DESTRUCTURE ENV VARIABLES WITH DEFAULT VALUES
-const { PORT = 5000 } = process.env;
+const { PORT = 3000 } = process.env;
 
 // Create Application Object
 const app = express();
