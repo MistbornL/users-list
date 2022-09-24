@@ -8,6 +8,7 @@ const router = Router();
 router.get("/", isLoggedIn, async (req, res) => {
   try {
     const users = await User.find();
+    console.log(users);
     const usersForFront = users.map((user) => {
       return {
         id: user._id,

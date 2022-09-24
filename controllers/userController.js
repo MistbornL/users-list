@@ -11,8 +11,13 @@ const SECRET = process.env.SECRET;
 
 // Signup route to create a new user
 router.post("/signup", async (req, res) => {
-  console.log(req.body);
   try {
+    const { email, password, name } = req.body;
+
+    const check = User.findOne({ email });
+    if (check) {
+      res.status(400).json({ message: "This user already exists." });
+    }
     // hash the password
     req.body.password = await bcrypt.hash(req.body.password, 10);
     // create date for user registrations

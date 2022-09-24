@@ -1,7 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 export const SignUp = () => {
+  const userName = React.useRef();
+  const password = React.useRef();
+  const email = React.useRef();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:5000/user/signup", {
+        username: userName.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <header>
@@ -9,12 +29,13 @@ export const SignUp = () => {
       </header>
       <main className="d-flex flex-column justify-content-center align-items-center">
         <div
-          class="card bg-light text-black"
+          className="card bg-light text-black"
           style={{
             width: "40rem",
           }}
         >
           <form
+            onSubmit={handleRegister}
             style={{
               padding: "2rem",
               boxSizing: "border-box",
@@ -22,32 +43,35 @@ export const SignUp = () => {
               alignItems: "center",
             }}
           >
-            <div class="form-group">
+            <div className="form-group">
               <label for="exampleInputEmail1">User Name</label>
               <input
+                ref={userName}
                 type="text"
-                class="form-control"
+                className="form-control"
                 placeholder="Enter Name"
               />
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label for="exampleInputEmail1">Email address</label>
               <input
+                ref={email}
                 type="email"
-                class="form-control"
+                className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 placeholder="Enter email"
               />
-              <small id="emailHelp" class="form-text text-muted">
+              <small id="emailHelp" className="form-text text-muted">
                 We'll never share your email with anyone else.
               </small>
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label for="exampleInputPassword1">Password</label>
               <input
+                ref={password}
                 type="password"
-                class="form-control"
+                className="form-control"
                 id="exampleInputPassword1"
                 placeholder="Password"
               />
@@ -56,8 +80,8 @@ export const SignUp = () => {
             <p>
               Have An Account? <Link to="/">Log In</Link>
             </p>
-            <button type="submit" class="btn btn-primary">
-              Log In
+            <button type="submit" className="btn btn-primary">
+              Sign up
             </button>
           </form>
         </div>

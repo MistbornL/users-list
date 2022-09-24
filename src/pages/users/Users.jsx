@@ -3,15 +3,21 @@ import React, { useEffect } from "react";
 
 export const Users = () => {
   const [users, setUsers] = React.useState([]);
+  const token = console.log(users);
 
   useEffect(() => {
     axios
-      .get("localhost:5000/")
+      .get("http://localhost:5000/users/", {
+        headers: {
+          "content-type": "application/json",
+          // "Authorization":
+        },
+      })
       .then((res) => {
-        console.log(res);
+        setUsers(res.data);
       })
       .catch((err) => {
-        console.log("ERROR", err);
+        console.log(err);
       });
   }, []);
 
@@ -24,7 +30,7 @@ export const Users = () => {
         <img src="" alt="unblock" />
         <img src="" alt="delete" />
       </div>
-      <table class="table">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>

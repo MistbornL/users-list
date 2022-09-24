@@ -15,7 +15,10 @@ const app = express();
 app.use(cors()); // add cors headers
 app.use(express.json()); // parse json bodies
 
-app.use("/", Users);
+app.get("/", (req, res) => {
+  res.send("this is the test route to make sure server is working");
+});
+app.use("/users", Users);
 app.use("/user", UserRoutes); // send all "/user" requests to UserRouter for routing
 
 // APP LISTENER
