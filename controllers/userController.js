@@ -46,7 +46,6 @@ router.post("/login", async (req, res) => {
         user.dateLastAuthorization = Date.now();
         user.status = "Online";
         await user.save();
-
         res.json({ token, userId: user.id });
       } else {
         res.status(400).json({ error: "password doesn't match" });
@@ -56,6 +55,15 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({ error });
+  }
+});
+
+router.get("/logout", auth, async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.user.userId, { status: OFFLINE });
+    res.status(200).json({ message: "User changed." });
+  } catch (e) {
+    res.status(400).json({ message: "Something went wrong, try again." });
   }
 });
 
