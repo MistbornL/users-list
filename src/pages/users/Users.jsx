@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import unblock from "../../assets/png-transparent-padlock-line-padlock-white-technic-castle.png";
 import del from "../../assets/png-clipart-trash-can-illustration-computer-icons-icon-design-delete-button-miscellaneous-text.png";
 export const Users = () => {
@@ -44,10 +44,31 @@ export const Users = () => {
     }
   };
 
+  const handleDelete = () => {
+    const selectedUsers = users.filter((user) => user.isChecked);
+
+    selectedUsers.forEach((user) => {
+      axios
+        .delete(`http://localhost:5000/users/delete/${user.id}`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    const updatedUsers = users.filter((user) => !user.isChecked);
+    setUsers(updatedUsers);
+  };
   return (
     <div className="App">
       <div className="d-flex justify-content-between align-items-center">
-        <button type="button" class="btn btn-danger btn-lg">
+        <button type="button" className="btn btn-danger btn-lg">
           Block
         </button>
         <img
@@ -55,7 +76,12 @@ export const Users = () => {
           src={unblock}
           alt="unblock"
         />
-        <img style={{ width: "60px", height: "60px" }} src={del} alt="delete" />
+        <img
+          onClick={handleDelete}
+          style={{ cursor: "pointer", width: "60px", height: "60px" }}
+          src={del}
+          alt="delete"
+        />
       </div>
       <table className="table ">
         <thead>
@@ -82,7 +108,7 @@ export const Users = () => {
         <tbody>
           {users.map((user, index) => {
             return (
-              <>
+              <Fragment key={index}>
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -101,7 +127,7 @@ export const Users = () => {
                   <td>{user.dateLastAuthorization}</td>
                   <td>{user.status}</td>
                 </tr>
-              </>
+              </Fragment>
             );
           })}
         </tbody>

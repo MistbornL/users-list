@@ -8,7 +8,6 @@ const router = Router();
 router.get("/", isLoggedIn, async (req, res) => {
   try {
     const users = await User.find();
-    console.log(users);
     const usersForFront = users.map((user) => {
       return {
         id: user._id,
@@ -26,6 +25,7 @@ router.get("/", isLoggedIn, async (req, res) => {
 });
 
 router.delete("/delete/:id", isLoggedIn, async (req, res) => {
+  console.log(req.params.id);
   try {
     await User.remove({ _id: req.params.id });
     res.status(200).json({ message: "User has been deleted." });
