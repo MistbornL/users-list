@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
   const email = useRef();
@@ -15,7 +15,7 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/user/login", {
+      .post("https://users-list-xsbj.vercel.app/user/login", {
         email: email.current.value,
         password: password.current.value,
       })
@@ -33,6 +33,8 @@ export const Login = () => {
           alert("User is blocked");
         } else if (err.request.response.includes("password")) {
           alert("Password is incorrect");
+        } else {
+          alert("sometring went wrong");
         }
       });
   };

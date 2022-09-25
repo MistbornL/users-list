@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 export const SignUp = () => {
   const userName = React.useRef();
@@ -22,7 +22,7 @@ export const SignUp = () => {
       alert("Please fill all the fields");
     }
     axios
-      .post("http://localhost:5000/user/signup", {
+      .post("https://users-list-xsbj.vercel.app/user/signup", {
         username: userName.current.value,
         email: email.current.value,
         password: password.current.value,
@@ -36,6 +36,8 @@ export const SignUp = () => {
           alert("Email already exists");
         } else if (!error.request.response.includes("ValidatorError")) {
           alert("fill all the fields");
+        } else {
+          alert("Something went wrong");
         }
       });
   };
