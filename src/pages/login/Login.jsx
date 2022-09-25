@@ -7,6 +7,7 @@ export const Login = () => {
   const password = useRef();
   const [response, setResponse] = useState(false);
   const [userId, setUserId] = useState("");
+
   if (response) {
     return <Navigate to={`/users/${userId}`} />;
   }
@@ -22,13 +23,17 @@ export const Login = () => {
         const token = res.data.token;
         localStorage.setItem("token", token);
         if (res.status === 200) {
-          console.log(res);
           setResponse(true);
           setUserId(res.data.userId);
         }
       })
       .catch((err) => {
         console.log(err);
+        if (err.request.response.includes("blocked")) {
+          alert("User is blocked");
+        } else if (err.request.response.includes("password")) {
+          alert("Password is incorrect");
+        }
       });
   };
   return (
@@ -52,8 +57,8 @@ export const Login = () => {
               alignItems: "center",
             }}
           >
-            <div clasNames="form-group">
-              <label for="exampleInputEmail1">Email address</label>
+            <div className="form-group">
+              <label htmlFor="exampleInputEmail1">Email address</label>
               <input
                 ref={email}
                 type="email"
@@ -67,7 +72,7 @@ export const Login = () => {
               </small>
             </div>
             <div className="form-group">
-              <label for="exampleInputPassword1">Password</label>
+              <label htmlFor="exampleInputPassword1">Password</label>
               <input
                 ref={password}
                 type="password"

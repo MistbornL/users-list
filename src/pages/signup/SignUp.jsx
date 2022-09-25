@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 export const SignUp = () => {
   const userName = React.useRef();
@@ -24,7 +24,9 @@ export const SignUp = () => {
         response.status === 200 ? setResponse(true) : setResponse(false);
       })
       .catch(function (error) {
-        console.log(error);
+        if (error.request.response.includes("email")) {
+          alert("Email already exists");
+        }
       });
   };
 
