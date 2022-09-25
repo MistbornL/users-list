@@ -10,7 +10,7 @@ export const Users = () => {
   console.log(userId);
   useEffect(() => {
     axios
-      .get("https://users-list-xsbj.vercel.app/users/", {
+      .get("https://http://localhost:5000/users/", {
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${token}`,

@@ -22,7 +22,7 @@ export const SignUp = () => {
       alert("Please fill all the fields");
     }
     axios
-      .post("https://users-list-xsbj.vercel.app/user/signup", {
+      .post("http://localhost:5000/user/signup", {
         username: userName.current.value,
         email: email.current.value,
         password: password.current.value,
