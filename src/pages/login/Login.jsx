@@ -1,11 +1,12 @@
 import axios from "axios";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const email = React.useRef();
-  const password = React.useRef();
+  const email = useRef();
+  const password = useRef();
+  const [err, setErr] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -20,7 +21,9 @@ export const Login = () => {
         console.log(res);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.status === 400) {
+          setErr(true);
+        }
       });
   };
   return (

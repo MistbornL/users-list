@@ -37,7 +37,7 @@ router.delete("/delete/:id", isLoggedIn, async (req, res) => {
 router.post("/block/:id", isLoggedIn, async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.params.id, { status: BLOCKED });
-    res.status(200).json({ message: "User changed." });
+    res.status(200).json({ message: "User has been Blocked." });
   } catch (e) {
     res.status(400).json({ message: "Something went wrong, try again." });
   }
@@ -49,7 +49,7 @@ router.post("/unlock/:id", isLoggedIn, async (req, res) => {
     if (user.status === BLOCKED) {
       user.status = OFFLINE;
       await user.save();
-      res.status(200).json({ message: "User changed." });
+      res.status(200).json({ message: "User has been Unlocked." });
     } else {
       res.status(202).json({ message: "User is not blocked." });
     }

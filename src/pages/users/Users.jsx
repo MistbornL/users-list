@@ -21,6 +21,29 @@ export const Users = () => {
       });
   }, [token]);
 
+  const handleChecked = (e) => {
+    const name = e.target.name;
+    const isChecked = e.target.checked;
+    if (name === "allSelect") {
+      const updatedUsers = users.map((user) => {
+        return {
+          ...user,
+          isChecked: isChecked,
+        };
+      });
+      setUsers(updatedUsers);
+    } else {
+      const updatedUsers = users.map((user) => {
+        if (user.username === name) {
+          return { ...user, isChecked: isChecked };
+        } else {
+          return user;
+        }
+      });
+      setUsers(updatedUsers);
+    }
+  };
+
   return (
     <div className="App">
       <div className="d-flex justify-content-between align-items-center">
@@ -40,7 +63,11 @@ export const Users = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value=""
+              name="allSelect"
+              checked={
+                users.filter((user) => user?.isChecked !== true).length < 1
+              }
+              onChange={handleChecked}
               id="flexCheckDefault"
             />
 
@@ -59,7 +86,9 @@ export const Users = () => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value={user._id}
+                  name={user.username}
+                  checked={user?.isChecked || false}
+                  onChange={handleChecked}
                   id="flexCheckDefault"
                 />
 
