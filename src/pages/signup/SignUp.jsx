@@ -1,10 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 export const SignUp = () => {
   const userName = React.useRef();
   const password = React.useRef();
   const email = React.useRef();
+
+  const [response, setResponse] = useState(false);
+
+  if (response) {
+    return <Navigate to="/" />;
+  }
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -15,7 +21,7 @@ export const SignUp = () => {
         password: password.current.value,
       })
       .then(function (response) {
-        console.log(response);
+        response.status === 200 ? setResponse(true) : setResponse(false);
       })
       .catch(function (error) {
         console.log(error);

@@ -2,9 +2,12 @@ import axios from "axios";
 import React, { Fragment, useEffect } from "react";
 import unblock from "../../assets/png-transparent-padlock-line-padlock-white-technic-castle.png";
 import del from "../../assets/png-clipart-trash-can-illustration-computer-icons-icon-design-delete-button-miscellaneous-text.png";
+import { Navigate, useParams } from "react-router-dom";
 export const Users = () => {
   const [users, setUsers] = React.useState([]);
   const token = localStorage.getItem("token");
+  const { userId } = useParams();
+  console.log(userId);
   useEffect(() => {
     axios
       .get("http://localhost:5000/users/", {
@@ -44,6 +47,11 @@ export const Users = () => {
     }
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    <Navigate to="/" />;
+  };
+
   const handleDelete = () => {
     const selectedUsers = users.filter((user) => user.isChecked);
 
@@ -73,7 +81,7 @@ export const Users = () => {
       axios
         .post(
           `http://localhost:5000/users/block/${user.id}`,
-          { isBlocked: !user.isBlocked },
+          {},
           {
             headers: {
               "content-type": "application/json",
@@ -105,7 +113,7 @@ export const Users = () => {
       axios
         .post(
           `http://localhost:5000/users/unlock/${user.id}`,
-          { isBlocked: !user.isBlocked },
+          {},
           {
             headers: {
               "content-type": "application/json",

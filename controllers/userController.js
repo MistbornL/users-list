@@ -61,7 +61,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", isLoggedIn, async (req, res) => {
   try {
-    await User.findByIdAndUpdate(req.user.userId, { status: OFFLINE });
+    await User.findByIdAndUpdate(req.user.userId, { status: "Offline" });
     res.status(200).json({ message: "User changed." });
   } catch (e) {
     res.status(400).json({ message: "Something went wrong, try again." });

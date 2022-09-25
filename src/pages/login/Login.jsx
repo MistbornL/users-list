@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const email = useRef();
   const password = useRef();
-  const [err, setErr] = useState(false);
+  const [response, setResponse] = useState(false);
+  const [userId, setUserId] = useState("");
+  if (response) {
+    return <Navigate to={`/users/${userId}`} />;
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,12 +21,14 @@ export const Login = () => {
       .then((res) => {
         const token = res.data.token;
         localStorage.setItem("token", token);
-        console.log(res);
+        if (res.status === 200) {
+          console.log(res);
+          setResponse(true);
+          setUserId(res.data.userId);
+        }
       })
       .catch((err) => {
-        if (err.status === 400) {
-          setErr(true);
-        }
+        console.log(err);
       });
   };
   return (
