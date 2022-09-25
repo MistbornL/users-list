@@ -9,7 +9,7 @@ export const Login = () => {
   const [userId, setUserId] = useState("");
 
   if (response) {
-    return <Navigate to={`/users/${userId}`} />;
+    window.location.href = `/users/${userId}`;
   }
 
   const handleLogin = (e) => {

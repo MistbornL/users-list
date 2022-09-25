@@ -9,11 +9,18 @@ export const SignUp = () => {
   const [response, setResponse] = useState(false);
 
   if (response) {
-    return <Navigate to="/" />;
+    return (window.location.href = "/");
   }
 
   const handleRegister = (e) => {
     e.preventDefault();
+    if (
+      !userName.current.value ||
+      !password.current.value ||
+      !email.current.value
+    ) {
+      alert("Please fill all the fields");
+    }
     axios
       .post("http://localhost:5000/user/signup", {
         username: userName.current.value,
@@ -24,8 +31,11 @@ export const SignUp = () => {
         response.status === 200 ? setResponse(true) : setResponse(false);
       })
       .catch(function (error) {
-        if (error.request.response.includes("email")) {
+        console.log(error);
+        if (error.request.response.includes("keyPattern")) {
           alert("Email already exists");
+        } else if (!error.request.response.includes("ValidatorError")) {
+          alert("fill all the fields");
         }
       });
   };
