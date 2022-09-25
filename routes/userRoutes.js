@@ -1,5 +1,4 @@
 const { Router } = require("express");
-
 const User = require("../models/userModel");
 const { isLoggedIn } = require("../controllers/midleware");
 
@@ -25,7 +24,6 @@ router.get("/", isLoggedIn, async (req, res) => {
 });
 
 router.delete("/delete/:id", isLoggedIn, async (req, res) => {
-  console.log(req.params.id);
   try {
     await User.remove({ _id: req.params.id });
     res.status(200).json({ message: "User has been deleted." });
@@ -35,8 +33,9 @@ router.delete("/delete/:id", isLoggedIn, async (req, res) => {
 });
 
 router.post("/block/:id", isLoggedIn, async (req, res) => {
+  console.log(req.params);
   try {
-    await User.findByIdAndUpdate(req.params.id, { status: BLOCKED });
+    await User.findByIdAndUpdate(req.params.id, { status: "Blocked" });
     res.status(200).json({ message: "User has been Blocked." });
   } catch (e) {
     res.status(400).json({ message: "Something went wrong, try again." });
@@ -46,8 +45,8 @@ router.post("/block/:id", isLoggedIn, async (req, res) => {
 router.post("/unlock/:id", isLoggedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (user.status === BLOCKED) {
-      user.status = OFFLINE;
+    if (user.status === "Blocked") {
+      user.status = "Offline";
       await user.save();
       res.status(200).json({ message: "User has been Unlocked." });
     } else {
@@ -60,7 +59,7 @@ router.post("/unlock/:id", isLoggedIn, async (req, res) => {
 
 router.get("/logout", isLoggedIn, async (req, res) => {
   try {
-    await User.findByIdAndUpdate(req.user.userId, { status: OFFLINE });
+    await User.findByIdAndUpdate(req.user.userId, { status: "Offline" });
     res.status(200).json({ message: "User changed." });
   } catch (e) {
     res.status(400).json({ message: "Something went wrong, try again." });

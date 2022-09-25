@@ -65,15 +65,84 @@ export const Users = () => {
     const updatedUsers = users.filter((user) => !user.isChecked);
     setUsers(updatedUsers);
   };
+
+  const handleBlock = () => {
+    const selectedUsers = users.filter((user) => user.isChecked);
+
+    selectedUsers.forEach((user) => {
+      axios
+        .post(
+          `http://localhost:5000/users/block/${user.id}`,
+          { isBlocked: !user.isBlocked },
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    const updatedUsers = users.map((user) => {
+      if (user.isChecked) {
+        return { ...user, status: "Blocked" };
+      } else {
+        return user;
+      }
+    });
+    setUsers(updatedUsers);
+  };
+
+  const handleUnblock = () => {
+    const selectedUsers = users.filter((user) => user.isChecked);
+
+    selectedUsers.forEach((user) => {
+      axios
+        .post(
+          `http://localhost:5000/users/unlock/${user.id}`,
+          { isBlocked: !user.isBlocked },
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    const updatedUsers = users.map((user) => {
+      if (user.isChecked) {
+        return { ...user, status: "offline" };
+      } else {
+        return user;
+      }
+    });
+    setUsers(updatedUsers);
+  };
   return (
     <div className="App">
       <div className="d-flex justify-content-between align-items-center">
-        <button type="button" className="btn btn-danger btn-lg">
+        <button
+          onClick={handleBlock}
+          type="button"
+          className="btn btn-danger btn-lg"
+        >
           Block
         </button>
         <img
-          style={{ width: "60px", height: "60px" }}
+          style={{ cursor: "pointer", width: "60px", height: "60px" }}
           src={unblock}
+          onClick={handleUnblock}
           alt="unblock"
         />
         <img
