@@ -69,6 +69,11 @@ export const Users = () => {
         .catch((err) => {
           console.log(err);
         });
+
+      if (user.id === userId) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      }
     });
     const updatedUsers = users.filter((user) => !user.isChecked);
     setUsers(updatedUsers);
@@ -96,7 +101,6 @@ export const Users = () => {
           console.log(err);
         });
       if (user.id === userId) {
-        console.log("ah");
         localStorage.removeItem("token");
         window.location.href = "/";
       }
