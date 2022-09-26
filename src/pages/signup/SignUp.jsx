@@ -5,8 +5,13 @@ export const SignUp = () => {
   const userName = React.useRef();
   const password = React.useRef();
   const email = React.useRef();
-
+  const url = "https://server-list-user.herokuapp.com";
   const [response, setResponse] = useState(false);
+  let config = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  };
 
   if (response) {
     return (window.location.href = "/");
@@ -23,13 +28,13 @@ export const SignUp = () => {
     }
     axios
       .post(
-        "https://server-user-list-mistborn.vercel.app/user/signup",
+        `${url}/user/signup`,
         {
           username: userName.current.value,
           email: email.current.value,
           password: password.current.value,
         },
-        { "Access-Control-Allow-Origin": "*" }
+        config
       )
 
       .then(function (response) {

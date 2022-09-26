@@ -7,10 +7,12 @@ export const Users = () => {
   const [users, setUsers] = React.useState([]);
   const token = localStorage.getItem("token");
   const { userId } = useParams();
+  const url = "https://server-list-user.herokuapp.com";
   console.log(userId);
   useEffect(() => {
     axios
-      .get("https://server-user-list-mistborn.vercel.app/users/", {
+
+      .get(`${url}/user/signup/users/`, {
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -58,15 +60,12 @@ export const Users = () => {
 
     selectedUsers.forEach((user) => {
       axios
-        .delete(
-          `https://server-user-list-mistborn.vercel.app/users/delete/${user.id}`,
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
+        .delete(`${url}/users/delete/${user.id}`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           console.log(res);
         })
@@ -89,7 +88,7 @@ export const Users = () => {
     selectedUsers.forEach((user) => {
       axios
         .post(
-          `https://server-user-list-mistborn.vercel.app/block/${user.id}`,
+          `${url}/user/signup/block/${user.id}`,
           {},
           {
             headers: {
@@ -125,7 +124,7 @@ export const Users = () => {
     selectedUsers.forEach((user) => {
       axios
         .post(
-          `https://server-user-list-mistborn.vercel.app/unlock/${user.id}`,
+          `${url}/user/signup/unlock/${user.id}`,
           {},
           {
             headers: {

@@ -7,7 +7,7 @@ export const Login = () => {
   const password = useRef();
   const [response, setResponse] = useState(false);
   const [userId, setUserId] = useState("");
-
+  const url = "https://server-list-user.herokuapp.com";
   if (response) {
     window.location.href = `/users/${userId}`;
   }
@@ -15,7 +15,7 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post("https://server-user-list-mistborn.vercel.app/user/login", {
+      .post(`${url}/user/login`, {
         email: email.current.value,
         password: password.current.value,
       })
