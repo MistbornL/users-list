@@ -15,7 +15,7 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/user/login", {
+      .post("https://server-user-list-mistborn.vercel.app/user/login", {
         email: email.current.value,
         password: password.current.value,
       })

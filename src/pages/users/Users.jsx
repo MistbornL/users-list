@@ -10,7 +10,7 @@ export const Users = () => {
   console.log(userId);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/users/", {
+      .get("https://server-user-list-mistborn.vercel.app/users/", {
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -58,12 +58,15 @@ export const Users = () => {
 
     selectedUsers.forEach((user) => {
       axios
-        .delete(`http://localhost:5000/users/delete/${user.id}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .delete(
+          `https://server-user-list-mistborn.vercel.app/users/delete/${user.id}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((res) => {
           console.log(res);
         })
@@ -86,7 +89,7 @@ export const Users = () => {
     selectedUsers.forEach((user) => {
       axios
         .post(
-          `http://localhost:5000/users/block/${user.id}`,
+          `https://server-user-list-mistborn.vercel.app/block/${user.id}`,
           {},
           {
             headers: {
@@ -122,7 +125,7 @@ export const Users = () => {
     selectedUsers.forEach((user) => {
       axios
         .post(
-          `http://localhost:5000/users/unlock/${user.id}`,
+          `https://server-user-list-mistborn.vercel.app/unlock/${user.id}`,
           {},
           {
             headers: {
