@@ -22,11 +22,16 @@ export const SignUp = () => {
       alert("Please fill all the fields");
     }
     axios
-      .post("https://server-user-list-mistborn.vercel.app/user/signup", {
-        username: userName.current.value,
-        email: email.current.value,
-        password: password.current.value,
-      })
+      .post(
+        "https://server-user-list-mistborn.vercel.app/user/signup",
+        {
+          username: userName.current.value,
+          email: email.current.value,
+          password: password.current.value,
+        },
+        { "Access-Control-Allow-Origin": "*" }
+      )
+
       .then(function (response) {
         response.status === 200 ? setResponse(true) : setResponse(false);
       })
