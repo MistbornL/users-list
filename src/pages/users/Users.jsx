@@ -12,7 +12,7 @@ export const Users = () => {
   useEffect(() => {
     axios
 
-      .get(`${url}/user/signup/users/`, {
+      .get(`${url}/users/`, {
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ export const Users = () => {
     selectedUsers.forEach((user) => {
       axios
         .post(
-          `${url}/user/signup/block/${user.id}`,
+          `${url}/users/block/${user.id}`,
           {},
           {
             headers: {
@@ -124,7 +124,7 @@ export const Users = () => {
     selectedUsers.forEach((user) => {
       axios
         .post(
-          `${url}/user/signup/unlock/${user.id}`,
+          `${url}/users/unlock/${user.id}`,
           {},
           {
             headers: {
