@@ -64,7 +64,7 @@ export const SignUp = () => {
             }}
           >
             <div className="form-group">
-              <label for="exampleInputEmail1">User Name</label>
+              <label htmlFor="exampleInputUserName">User Name</label>
               <input
                 ref={userName}
                 type="text"
@@ -73,7 +73,7 @@ export const SignUp = () => {
               />
             </div>
             <div className="form-group">
-              <label for="exampleInputEmail1">Email address</label>
+              <label htmlFor="exampleInputEmail1">Email address</label>
               <input
                 ref={email}
                 type="email"
@@ -87,7 +87,7 @@ export const SignUp = () => {
               </small>
             </div>
             <div className="form-group">
-              <label for="exampleInputPassword1">Password</label>
+              <label htmlFor="exampleInputPassword1">Password</label>
               <input
                 ref={password}
                 type="password"

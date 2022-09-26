@@ -10,13 +10,14 @@ export const Users = () => {
   console.log(userId);
   useEffect(() => {
     axios
-      .get("https://http://localhost:5000/users/", {
+      .get("http://localhost:5000/users/", {
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
+        console.log(res.data);
         setUsers(res.data);
       })
       .catch((err) => {
